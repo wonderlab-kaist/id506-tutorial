@@ -3,6 +3,9 @@
 
 #define BUFFER_SIZE 128
 
+#define TRIG_PIN 13
+#define ECHO_PIN 12
+
 
 int status = WL_IDLE_STATUS;
 char ssid[] = SECRET_SSID;
@@ -30,10 +33,13 @@ void setup() {
   Serial.print("IP Address: ");
   Serial.println(ip);
   Udp.begin(localPort);
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
 }
 
 void loop() {
-  float value = (float)random(0, 100) / 200;
+  float value = getValue();
 
   int packetSize = Udp.parsePacket();
   Serial.println(packetSize);
@@ -45,6 +51,7 @@ void loop() {
 
     char message[10];
     snprintf(message, sizeof(message), "%f", value);
+    Serial.println(value);
 
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(message);
@@ -54,4 +61,18 @@ void loop() {
   }
 
   delay(2);
+}
+
+
+float getValue() {
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  unsigned long duration = pulseIn(ECHO_PIN, HIGH);
+  float distance = (float)duration * 343 / 1000000 / 2;
+
+  return distance;
 }
