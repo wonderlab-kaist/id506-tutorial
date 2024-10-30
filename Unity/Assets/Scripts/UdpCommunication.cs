@@ -33,10 +33,8 @@ public class UdpCommunication : MonoBehaviour
 
     void Update()
     {
-        /*
         byte[] data = new byte[1];
         client.Send(data, data.Length, remoteEndPoint);
-        */
     }
 
 
