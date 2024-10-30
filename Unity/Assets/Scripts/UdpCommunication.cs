@@ -35,6 +35,8 @@ public class UdpCommunication : MonoBehaviour
     {
         byte[] data = new byte[1];
         client.Send(data, data.Length, remoteEndPoint);
+
+        Debug.Log("Sended");
     }
 
 
@@ -46,6 +48,8 @@ public class UdpCommunication : MonoBehaviour
 
     private void OnUdpReceive(IAsyncResult asyncResult)
     {
+        Debug.Log("Received");
+
         IPEndPoint ipEndPoint = null;
         byte[] receivedBytes = client.EndReceive(asyncResult, ref ipEndPoint);
         string receivedString = Encoding.ASCII.GetString(receivedBytes);
