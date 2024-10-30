@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using TMPro;
 using UnityEngine;
 
 public class UdpCommunication : MonoBehaviour
@@ -55,8 +56,7 @@ public class UdpCommunication : MonoBehaviour
         string receivedString = Encoding.ASCII.GetString(receivedBytes);
 
         value = float.Parse(receivedString);
-
-        Debug.Log(value);
+        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
 
         client.BeginReceive(OnUdpReceive, null);
     }
