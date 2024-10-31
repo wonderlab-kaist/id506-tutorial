@@ -21,7 +21,7 @@ public class UdpCommunication : MonoBehaviour
 
     private float timeFromLastSend;
 
-    private float value;
+    private float sensorValue;
 
 
     void Start()
@@ -39,7 +39,7 @@ public class UdpCommunication : MonoBehaviour
 
     void Update()
     {
-        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
+        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", sensorValue);
 
         timeFromLastSend += Time.deltaTime;
         if (timeFromLastSend >= 1.0 / TARGET_FREQUENCY)
@@ -90,6 +90,6 @@ public class UdpCommunication : MonoBehaviour
     {
         string decodedString = Encoding.ASCII.GetString(message);
 
-        value = float.Parse(decodedString);
+        sensorValue = float.Parse(decodedString);
     }
 }

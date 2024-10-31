@@ -39,7 +39,7 @@ void setup() {
 }
 
 void loop() {
-  float value = getValue();
+  float sensorValue = getSensorValue();
 
   int packetSize = Udp.parsePacket();
   Serial.println(packetSize);
@@ -50,8 +50,8 @@ void loop() {
     Udp.read(packetBuffer, BUFFER_SIZE);
 
     char message[10];
-    snprintf(message, sizeof(message), "%f", value);
-    Serial.println(value);
+    snprintf(message, sizeof(message), "%f", sensorValue);
+    Serial.println(sensorValue);
 
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(message);
@@ -64,7 +64,7 @@ void loop() {
 }
 
 
-float getValue() {
+float getSensorValue() {
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG_PIN, HIGH);
