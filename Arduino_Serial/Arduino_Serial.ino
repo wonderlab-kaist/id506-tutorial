@@ -21,15 +21,15 @@ void loop() {
   float sensorValue = getSensorValue();
 
   int packetSize = Serial.available();
-  if (packetSize) {
+  if (packetSize > 0) {
     Serial.readBytes(packetBuffer, min(BUFFER_SIZE, packetSize));
     bool isMousePressed = packetBuffer[0] == 1;
-    digitalWrite(LED_PIN, isMousePressed ? 1 : 0);
+    digitalWrite(LED_PIN, isMousePressed ? HIGH : LOW);
 
     char message[10];
     snprintf(message, sizeof(message), "%f\n", sensorValue);
 
-    Serial.write(message, 10);
+    Serial.write(message, sizeof(message));
   }
 
   delay(2);

@@ -73,7 +73,7 @@ public class SerialCommunication : MonoBehaviour
     {
         byte[] message = new byte[1];
 
-        message[0] = isMousePressed ? (byte) 1 : (byte) 0;
+        message[0] = isMousePressed ? (byte)1 : (byte)0;
 
         return message;
     }

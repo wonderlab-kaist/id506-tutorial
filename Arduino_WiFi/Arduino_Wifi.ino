@@ -43,10 +43,10 @@ void loop() {
   float sensorValue = getSensorValue();
 
   int packetSize = Udp.parsePacket();
-  if (packetSize) {
+  if (packetSize > 0) {
     Udp.read(packetBuffer, BUFFER_SIZE);
     bool isMousePressed = packetBuffer[0] == 1;
-    digitalWrite(LED_PIN, isMousePressed ? 1 : 0);
+    digitalWrite(LED_PIN, isMousePressed ? HIGH : LOW);
 
     char message[10];
     snprintf(message, sizeof(message), "%f", sensorValue);
