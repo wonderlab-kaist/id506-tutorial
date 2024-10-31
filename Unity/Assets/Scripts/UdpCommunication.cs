@@ -50,8 +50,6 @@ public class UdpCommunication : MonoBehaviour
             byte[] message = EncodeMessageUnityToArduino();
             client.Send(message, message.Length, remoteEndPoint);
 
-            Debug.Log("Sended");
-
             timeFromLastSend = 0;
         }
     }
@@ -65,8 +63,6 @@ public class UdpCommunication : MonoBehaviour
 
     private void OnUdpReceive(IAsyncResult asyncResult)
     {
-        Debug.Log("Received");
-
         IPEndPoint ipEndPoint = null;
         byte[] message = client.EndReceive(asyncResult, ref ipEndPoint);
 

@@ -22,8 +22,6 @@ unsigned char packetBuffer[BUFFER_SIZE];
 void setup() {
   Serial.begin(115200);
 
-  Serial.println("Start");
-
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(ssid);
@@ -45,25 +43,17 @@ void loop() {
   float sensorValue = getSensorValue();
 
   int packetSize = Udp.parsePacket();
-  Serial.println(packetSize);
   if (packetSize) {
-    Serial.println("Received");
-    Serial.println(Udp.remoteIP());
-
     Udp.read(packetBuffer, BUFFER_SIZE);
     bool isMousePressed = packetBuffer[0] == 1;
-    Serial.println(isMousePressed);
     digitalWrite(LED_PIN, isMousePressed ? 1 : 0);
 
     char message[10];
     snprintf(message, sizeof(message), "%f", sensorValue);
-    Serial.println(sensorValue);
 
     Udp.beginPacket(Udp.remoteIP(), Udp.remotePort());
     Udp.write(message);
     Udp.endPacket();
-
-    Serial.println("Sended");
   }
 
   delay(2);
