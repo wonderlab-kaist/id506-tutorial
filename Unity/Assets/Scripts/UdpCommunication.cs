@@ -39,6 +39,8 @@ public class UdpCommunication : MonoBehaviour
 
     void Update()
     {
+        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
+
         timeFromLastSend += Time.deltaTime;
         if (timeFromLastSend >= 1.0 / TARGET_FREQUENCY)
         {
@@ -49,8 +51,6 @@ public class UdpCommunication : MonoBehaviour
 
             timeFromLastSend = 0;
         }
-
-        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
     }
 
 
