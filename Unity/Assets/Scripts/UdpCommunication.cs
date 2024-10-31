@@ -34,10 +34,12 @@ public class UdpCommunication : MonoBehaviour
 
     void Update()
     {
-        byte[] data = new byte[1];
-        client.Send(data, data.Length, remoteEndPoint);
+        byte[] message = EncodeMessageUnityToArduino();
+        client.Send(message, message.Length, remoteEndPoint);
 
         Debug.Log("Sended");
+
+        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
     }
 
 
@@ -52,12 +54,31 @@ public class UdpCommunication : MonoBehaviour
         Debug.Log("Received");
 
         IPEndPoint ipEndPoint = null;
-        byte[] receivedBytes = client.EndReceive(asyncResult, ref ipEndPoint);
-        string receivedString = Encoding.ASCII.GetString(receivedBytes);
+        byte[] message = client.EndReceive(asyncResult, ref ipEndPoint);
 
-        value = float.Parse(receivedString);
-        GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
+        try
+        {
+            DecodeMessageArduinoToUnity(message);
+        }
+        catch (Exception e)
+        {
+            Debug.LogException(e);
+        }
 
         client.BeginReceive(OnUdpReceive, null);
+    }
+
+
+    private byte[] EncodeMessageUnityToArduino()
+    {
+        return new byte[1];
+    }
+
+
+    private void DecodeMessageArduinoToUnity(byte[] message)
+    {
+        string decodedString = Encoding.ASCII.GetString(message);
+
+        value = float.Parse(decodedString);
     }
 }
