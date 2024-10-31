@@ -6,6 +6,8 @@
 #define TRIG_PIN 13
 #define ECHO_PIN 12
 
+#define LED_PIN 8
+
 
 int status = WL_IDLE_STATUS;
 char ssid[] = SECRET_SSID;
@@ -36,6 +38,7 @@ void setup() {
 
   pinMode(TRIG_PIN, OUTPUT);
   pinMode(ECHO_PIN, INPUT);
+  pinMode(LED_PIN, OUTPUT);
 }
 
 void loop() {
@@ -48,6 +51,9 @@ void loop() {
     Serial.println(Udp.remoteIP());
 
     Udp.read(packetBuffer, BUFFER_SIZE);
+    bool isMousePressed = packetBuffer[0] == 1;
+    Serial.println(isMousePressed);
+    digitalWrite(LED_PIN, isMousePressed ? 1 : 0);
 
     char message[10];
     snprintf(message, sizeof(message), "%f", sensorValue);

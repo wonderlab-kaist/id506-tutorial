@@ -21,6 +21,7 @@ public class UdpCommunication : MonoBehaviour
 
     private float timeFromLastSend;
 
+    private bool isMousePressed;
     private float sensorValue;
 
 
@@ -39,6 +40,8 @@ public class UdpCommunication : MonoBehaviour
 
     void Update()
     {
+        isMousePressed = Input.GetMouseButton(0);
+
         GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", sensorValue);
 
         timeFromLastSend += Time.deltaTime;
@@ -82,7 +85,11 @@ public class UdpCommunication : MonoBehaviour
 
     private byte[] EncodeMessageUnityToArduino()
     {
-        return new byte[1];
+        byte[] message = new byte[1];
+
+        message[0] = isMousePressed ? (byte) 1 : (byte) 0;
+
+        return message;
     }
 
 
