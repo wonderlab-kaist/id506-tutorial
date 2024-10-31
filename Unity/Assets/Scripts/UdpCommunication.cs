@@ -9,12 +9,17 @@ using UnityEngine;
 
 public class UdpCommunication : MonoBehaviour
 {
+    public const int TARGET_FREQUENCY = 10;
+
+
     public string ip;
     public int port;
 
 
     private IPEndPoint remoteEndPoint;
     private UdpClient client;
+
+    private float timeFromLastSend;
 
     private float value;
 
@@ -34,10 +39,16 @@ public class UdpCommunication : MonoBehaviour
 
     void Update()
     {
-        byte[] message = EncodeMessageUnityToArduino();
-        client.Send(message, message.Length, remoteEndPoint);
+        timeFromLastSend += Time.deltaTime;
+        if (timeFromLastSend >= 1.0 / TARGET_FREQUENCY)
+        {
+            byte[] message = EncodeMessageUnityToArduino();
+            client.Send(message, message.Length, remoteEndPoint);
 
-        Debug.Log("Sended");
+            Debug.Log("Sended");
+
+            timeFromLastSend = 0;
+        }
 
         GetComponentInChildren<TextMeshPro>().text = string.Format("{0:0.00}", value);
     }
